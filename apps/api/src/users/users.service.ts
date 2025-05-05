@@ -1,32 +1,43 @@
 import { User, UserRole } from '@enterprise/domain'
-import { ConflictException, Injectable, NotFoundException } from '@nestjs/common'
+import { ConflictException, Inject, Injectable, NotFoundException } from '@nestjs/common'
 import * as bcrypt from 'bcrypt'
+import { Repository } from 'typeorm'
 import { v4 as uuidv4 } from 'uuid'
+
+import { USER_REPOSITORY } from '../database/constants'
+import { UserEntity } from '../database/entity'
 
 @Injectable()
 export class UsersService {
-	// In-memory storage for users (in a real app, this would be a database)
-	private readonly users: User[] = [
-		new User({
-			id: uuidv4(),
-			username: 'admin',
-			passwordHash: bcrypt.hashSync('admin', 10),
-			role: UserRole.ADMIN,
-		}),
-		new User({
-			id: uuidv4(),
-			username: 'user',
-			passwordHash: bcrypt.hashSync('user', 10),
-			role: UserRole.USER,
-		}),
-	]
+	constructor(
+		@Inject(USER_REPOSITORY)
+		private userRepository: Repository<UserEntity>
+	) {
+		// Initialize default users if they don't exist
+		this.initializeDefaultUsers()
+	}
+
+	private async initializeDefaultUsers() {
+		const adminExists = await this.findOne('admin')
+		const userExists = await this.findOne('user')
+
+		if (!adminExists) {
+			await this.create('admin', 'admin', UserRole.ADMIN)
+		}
+
+		if (!userExists) {
+			await this.create('user', 'user', UserRole.USER)
+		}
+	}
 
 	async findOne(username: string): Promise<User | undefined> {
-		return this.users.find((user) => user.username === username)
+		const userEntity = await this.userRepository.findOne({ where: { username } })
+		return userEntity ? userEntity.toDomain() : undefined
 	}
 
 	async findById(id: string): Promise<User | undefined> {
-		return this.users.find((user) => user.id === id)
+		const userEntity = await this.userRepository.findOne({ where: { id } })
+		return userEntity ? userEntity.toDomain() : undefined
 	}
 
 	async create(username: string, password: string, role: UserRole = UserRole.USER): Promise<User> {
@@ -35,10 +46,7 @@ export class UsersService {
 			throw new ConflictException('Username already exists')
 		}
 
-		// Hash the password
 		const passwordHash = await bcrypt.hash(password, 10)
-
-		// Create new user
 		const newUser = new User({
 			id: uuidv4(),
 			username,
@@ -46,44 +54,39 @@ export class UsersService {
 			role,
 		})
 
-		// Save user (in a real app, this would save to a database)
-		this.users.push(newUser)
+		const userEntity = UserEntity.fromDomain(newUser)
+		await this.userRepository.save(userEntity)
 
 		return newUser
 	}
 
 	async update(id: string, data: Partial<User>): Promise<User> {
-		const userIndex = this.users.findIndex((user) => user.id === id)
-		if (userIndex === -1) {
+		const userEntity = await this.userRepository.findOne({ where: { id } })
+		if (!userEntity) {
 			throw new NotFoundException('User not found')
 		}
 
-		// If password is provided, hash it
 		if (data.passwordHash) {
 			data.passwordHash = await bcrypt.hash(data.passwordHash, 10)
 		}
 
-		// Update user
-		const updatedUser = {
-			...this.users[userIndex],
+		const updatedEntity = {
+			...userEntity,
 			...data,
 		}
 
-		// Validate user data
-		User.validatePartial(updatedUser)
+		User.validatePartial(updatedEntity)
+		await this.userRepository.save(updatedEntity)
 
-		// Save updated user
-		this.users[userIndex] = new User(updatedUser as any)
-
-		return this.users[userIndex]
+		return updatedEntity
 	}
 
 	async remove(id: string): Promise<void> {
-		const userIndex = this.users.findIndex((user) => user.id === id)
-		if (userIndex === -1) {
+		const userEntity = await this.userRepository.findOne({ where: { id } })
+		if (!userEntity) {
 			throw new NotFoundException('User not found')
 		}
 
-		this.users.splice(userIndex, 1)
+		await this.userRepository.remove(userEntity)
 	}
 }

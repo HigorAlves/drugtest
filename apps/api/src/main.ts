@@ -3,7 +3,6 @@ import { NestFactory } from '@nestjs/core'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 
 import { AppModule } from './app.module'
-import { SkipThrottle } from './throttler/decorators/skip-throttle.decorator'
 
 async function bootstrap() {
 	const app = await NestFactory.create(AppModule)
