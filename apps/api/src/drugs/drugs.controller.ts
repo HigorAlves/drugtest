@@ -1,4 +1,5 @@
 import { Drug, Indication } from '@enterprise/domain'
+import { extractIndicationsFromDailyMed } from '@enterprise/scraper'
 import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common'
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 
@@ -112,5 +113,39 @@ export class DrugsController {
       createIndicationDto.sourceText,
       createIndicationDto.mappingConfidence
     )
+  }
+
+  @ApiOperation({ summary: 'Scrape indications from DailyMed for a drug' })
+  @ApiResponse({ status: 200, description: 'Return the scraped indications', type: [Indication] })
+  @ApiResponse({ status: 404, description: 'Drug not found' })
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @Post(':id/scrape-indications')
+  async scrapeIndications(@Param('id') id: string): Promise<Indication[]> {
+    // Check if drug exists
+    const drug = await this.drugsService.findOne(id)
+    if (!drug) {
+      throw new Error('Drug not found')
+    }
+
+    // Scrape indications from DailyMed
+    const scrapedIndications = await extractIndicationsFromDailyMed(drug.labelUrl)
+
+    // Save each indication to the database
+    const savedIndications: Indication[] = []
+    for (const indicationText of scrapedIndications) {
+      // For now, we'll use the scraped text as both description and sourceText
+      // In a real application, you might want to process this text further or use an AI service to map to ICD-10 codes
+      const indication = await this.indicationsService.create(
+        indicationText,
+        'UNKNOWN', // ICD-10 code would need to be determined
+        id,
+        indicationText, // Use the raw text as sourceText
+        0.5 // Default confidence
+      )
+      savedIndications.push(indication)
+    }
+
+    return savedIndications
   }
 }
