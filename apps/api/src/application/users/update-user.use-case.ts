@@ -1,8 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import * as bcrypt from 'bcrypt';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common'
+import * as bcrypt from 'bcrypt'
 
-import { User } from '../../domain/models/user.model';
-import { UserRepository } from '../../domain/repositories/user.repository';
+import { User } from '../../domain/models/user.model'
+import { UserRepository } from '../../domain/repositories/user.repository'
 
 /**
  * Use case for updating a user
@@ -10,28 +10,28 @@ import { UserRepository } from '../../domain/repositories/user.repository';
  */
 @Injectable()
 export class UpdateUserUseCase {
-  constructor(private readonly userRepository: UserRepository) {}
+	constructor(@Inject('UserRepository') private readonly userRepository: UserRepository) {}
 
-  /**
-   * Execute the use case
-   * @param id - User ID
-   * @param userData - Updated user data
-   * @returns Promise<User> - Updated user
-   * @throws NotFoundException - If user is not found
-   */
-  async execute(id: string, userData: Partial<User>): Promise<User> {
-    // Check if user exists
-    const existingUser = await this.userRepository.findById(id);
-    if (!existingUser) {
-      throw new NotFoundException('User not found');
-    }
+	/**
+	 * Execute the use case
+	 * @param id - User ID
+	 * @param userData - Updated user data
+	 * @returns Promise<User> - Updated user
+	 * @throws NotFoundException - If user is not found
+	 */
+	async execute(id: string, userData: Partial<User>): Promise<User> {
+		// Check if user exists
+		const existingUser = await this.userRepository.findById(id)
+		if (!existingUser) {
+			throw new NotFoundException('User not found')
+		}
 
-    // Hash password if provided
-    if (userData.passwordHash) {
-      userData.passwordHash = await bcrypt.hash(userData.passwordHash, 10);
-    }
+		// Hash password if provided
+		if (userData.passwordHash) {
+			userData.passwordHash = await bcrypt.hash(userData.passwordHash, 10)
+		}
 
-    // Update user
-    return this.userRepository.update(id, userData);
-  }
+		// Update user
+		return this.userRepository.update(id, userData)
+	}
 }

@@ -1,6 +1,7 @@
-import { Injectable } from '@nestjs/common';
-import { Indication } from '../../domain/models/indication.model';
-import { IndicationRepository } from '../../domain/repositories/indication.repository';
+import { Injectable, Inject } from '@nestjs/common'
+
+import { Indication } from '../../domain/models/indication.model'
+import { IndicationRepository } from '../../domain/repositories/indication.repository'
 
 /**
  * Use case for finding all indications
@@ -8,13 +9,13 @@ import { IndicationRepository } from '../../domain/repositories/indication.repos
  */
 @Injectable()
 export class FindAllIndicationsUseCase {
-  constructor(private readonly indicationRepository: IndicationRepository) {}
+	constructor(@Inject('IndicationRepository') private readonly indicationRepository: IndicationRepository) {}
 
-  /**
-   * Execute the use case
-   * @returns Promise<Indication[]> - List of indications
-   */
-  async execute(): Promise<Indication[]> {
-    return this.indicationRepository.findAll();
-  }
+	/**
+	 * Execute the use case
+	 * @returns Promise<Indication[]> - List of indications
+	 */
+	async execute(): Promise<Indication[]> {
+		return this.indicationRepository.findAll()
+	}
 }

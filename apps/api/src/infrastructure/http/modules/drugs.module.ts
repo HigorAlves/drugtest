@@ -1,6 +1,9 @@
 import { Module } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
 
+import { IndicationMappingModule } from './indication-mapping.module'
+import { IndicationsModule } from './indications.module'
+
 import {
 	CreateDrugUseCase,
 	DeleteDrugUseCase,
@@ -17,7 +20,11 @@ import { DrugsController } from '../controllers/drugs.controller'
  * This module ties together controllers, use cases, and repositories
  */
 @Module({
-	imports: [TypeOrmModule.forFeature([DrugEntity])],
+	imports: [
+		TypeOrmModule.forFeature([DrugEntity]),
+		IndicationMappingModule,
+		IndicationsModule,
+	],
 	controllers: [DrugsController],
 	providers: [
 		// Use cases
@@ -29,6 +36,10 @@ import { DrugsController } from '../controllers/drugs.controller'
 
 		// Repositories
 		{
+			provide: 'DrugRepository',
+			useClass: DrugRepositoryImpl,
+		},
+		{
 			provide: DrugRepositoryImpl,
 			useClass: DrugRepositoryImpl,
 		},
@@ -39,6 +50,7 @@ import { DrugsController } from '../controllers/drugs.controller'
 		CreateDrugUseCase,
 		UpdateDrugUseCase,
 		DeleteDrugUseCase,
+		'DrugRepository',
 		DrugRepositoryImpl,
 	],
 })

@@ -1,7 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Inject } from '@nestjs/common'
 
-import { Indication } from '../../domain/models/indication.model';
-import { IndicationRepository } from '../../domain/repositories/indication.repository';
+import { Indication } from '../../domain/models/indication.model'
+import { IndicationRepository } from '../../domain/repositories/indication.repository'
 
 /**
  * Use case for finding indications by drug ID
@@ -9,14 +9,14 @@ import { IndicationRepository } from '../../domain/repositories/indication.repos
  */
 @Injectable()
 export class FindIndicationsByDrugIdUseCase {
-  constructor(private readonly indicationRepository: IndicationRepository) {}
+	constructor(@Inject('IndicationRepository') private readonly indicationRepository: IndicationRepository) {}
 
-  /**
-   * Execute the use case
-   * @param drugId - Drug ID
-   * @returns Promise<Indication[]> - List of indications for the drug
-   */
-  async execute(drugId: string): Promise<Indication[]> {
-    return this.indicationRepository.findByDrugId(drugId);
-  }
+	/**
+	 * Execute the use case
+	 * @param drugId - Drug ID
+	 * @returns Promise<Indication[]> - List of indications for the drug
+	 */
+	async execute(drugId: string): Promise<Indication[]> {
+		return this.indicationRepository.findByDrugId(drugId)
+	}
 }

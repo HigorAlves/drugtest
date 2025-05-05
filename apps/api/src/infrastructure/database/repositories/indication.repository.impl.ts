@@ -4,7 +4,7 @@ import { Repository } from 'typeorm'
 
 import { Indication } from '../../../domain/models/indication.model'
 import { IndicationRepository } from '../../../domain/repositories/indication.repository'
-import { IndicationEntity } from '../entities/indication.entity'
+import { IndicationEntity } from '../entities'
 
 /**
  * Implementation of the IndicationRepository interface

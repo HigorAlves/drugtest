@@ -1,7 +1,7 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, Inject } from '@nestjs/common'
 
-import { Indication } from '../../domain/models/indication.model';
-import { IndicationRepository } from '../../domain/repositories/indication.repository';
+import { Indication } from '../../domain/models/indication.model'
+import { IndicationRepository } from '../../domain/repositories/indication.repository'
 
 /**
  * Use case for updating an indication
@@ -9,26 +9,26 @@ import { IndicationRepository } from '../../domain/repositories/indication.repos
  */
 @Injectable()
 export class UpdateIndicationUseCase {
-  constructor(private readonly indicationRepository: IndicationRepository) {}
+	constructor(@Inject('IndicationRepository') private readonly indicationRepository: IndicationRepository) {}
 
-  /**
-   * Execute the use case
-   * @param id - Indication ID
-   * @param indicationData - Updated indication data
-   * @returns Promise<Indication> - Updated indication
-   * @throws NotFoundException - If indication is not found
-   */
-  async execute(id: string, indicationData: Partial<Indication>): Promise<Indication> {
-    // Check if indication exists
-    const existingIndication = await this.indicationRepository.findById(id);
-    if (!existingIndication) {
-      throw new NotFoundException('Indication not found');
-    }
+	/**
+	 * Execute the use case
+	 * @param id - Indication ID
+	 * @param indicationData - Updated indication data
+	 * @returns Promise<Indication> - Updated indication
+	 * @throws NotFoundException - If indication is not found
+	 */
+	async execute(id: string, indicationData: Partial<Indication>): Promise<Indication> {
+		// Check if indication exists
+		const existingIndication = await this.indicationRepository.findById(id)
+		if (!existingIndication) {
+			throw new NotFoundException('Indication not found')
+		}
 
-    // Validate the updated data
-    Indication.validatePartial(indicationData);
+		// Validate the updated data
+		Indication.validatePartial(indicationData)
 
-    // Update the indication
-    return this.indicationRepository.update(id, indicationData);
-  }
+		// Update the indication
+		return this.indicationRepository.update(id, indicationData)
+	}
 }

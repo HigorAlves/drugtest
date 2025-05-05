@@ -1,9 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Inject } from '@nestjs/common'
 
-import { Program } from '../../../domain/models/program.model';
-import { ProgramRepository } from '../../../domain/repositories/program.repository';
-import { DrugRepository } from '../../../domain/repositories/drug.repository';
-import { IndicationRepository } from '../../../domain/repositories/indication.repository';
+import { Program } from '../../../domain/models/program.model'
+import { DrugRepository } from '../../../domain/repositories/drug.repository'
+import { IndicationRepository } from '../../../domain/repositories/indication.repository'
+import { ProgramRepository } from '../../../domain/repositories/program.repository'
 
 /**
  * Implementation of the ProgramRepository interface
@@ -11,32 +11,32 @@ import { IndicationRepository } from '../../../domain/repositories/indication.re
  */
 @Injectable()
 export class ProgramRepositoryImpl implements ProgramRepository {
-  constructor(
-    private readonly drugRepository: DrugRepository,
-    private readonly indicationRepository: IndicationRepository
-  ) {}
+	constructor(
+		@Inject('DrugRepository') private readonly drugRepository: DrugRepository,
+		@Inject('IndicationRepository') private readonly indicationRepository: IndicationRepository
+	) {}
 
-  /**
-   * Find a program by ID
-   * @param id - Program ID (same as drug ID)
-   * @returns Promise<Program | undefined> - Program if found, undefined otherwise
-   */
-  async findById(id: string): Promise<Program | undefined> {
-    // Get the drug
-    const drug = await this.drugRepository.findById(id);
-    if (!drug) {
-      return undefined;
-    }
+	/**
+	 * Find a program by ID
+	 * @param id - Program ID (same as drug ID)
+	 * @returns Promise<Program | undefined> - Program if found, undefined otherwise
+	 */
+	async findById(id: string): Promise<Program | undefined> {
+		// Get the drug
+		const drug = await this.drugRepository.findById(id)
+		if (!drug) {
+			return undefined
+		}
 
-    // Get the indications for the drug
-    const indications = await this.indicationRepository.findByDrugId(id);
+		// Get the indications for the drug
+		const indications = await this.indicationRepository.findByDrugId(id)
 
-    // Return the program
-    return new Program({
-      id: drug.id,
-      name: drug.name,
-      labelUrl: drug.labelUrl,
-      indications,
-    });
-  }
+		// Return the program
+		return new Program({
+			id: drug.id,
+			name: drug.name,
+			labelUrl: drug.labelUrl,
+			indications,
+		})
+	}
 }

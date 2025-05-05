@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
 import { APP_GUARD } from '@nestjs/core'
 import { ThrottlerModule } from '@nestjs/throttler'
+import { TypeOrmModule } from '@nestjs/typeorm'
 
 import { DatabaseModule } from '../../database/database.module'
 import { JwtAuthGuard, RolesGuard } from '../../security'
@@ -38,6 +39,16 @@ import { UsersModule } from './users.module'
 				limit: 100,
 			},
 		]),
+		TypeOrmModule.forRoot({
+			type: 'postgres',
+			host: 'localhost',
+			port: 5432,
+			username: 'dev_local',
+			password: 'dev_local',
+			database: 'dev_local',
+			entities: [__dirname + '/../../../**/*.entity{.ts,.js}'],
+			synchronize: true,
+		}),
 		DatabaseModule,
 		AuthModule,
 		UsersModule,

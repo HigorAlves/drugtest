@@ -1,7 +1,7 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common'
 
-import { User } from '../../domain/models/user.model';
-import { UserRepository } from '../../domain/repositories/user.repository';
+import { User } from '../../domain/models/user.model'
+import { UserRepository } from '../../domain/repositories/user.repository'
 
 /**
  * Use case for finding a user by ID
@@ -9,19 +9,19 @@ import { UserRepository } from '../../domain/repositories/user.repository';
  */
 @Injectable()
 export class FindUserByIdUseCase {
-  constructor(private readonly userRepository: UserRepository) {}
+	constructor(@Inject('UserRepository') private readonly userRepository: UserRepository) {}
 
-  /**
-   * Execute the use case
-   * @param id - User ID
-   * @returns Promise<User> - User
-   * @throws NotFoundException - If user is not found
-   */
-  async execute(id: string): Promise<User> {
-    const user = await this.userRepository.findById(id);
-    if (!user) {
-      throw new NotFoundException('User not found');
-    }
-    return user;
-  }
+	/**
+	 * Execute the use case
+	 * @param id - User ID
+	 * @returns Promise<User> - User
+	 * @throws NotFoundException - If user is not found
+	 */
+	async execute(id: string): Promise<User> {
+		const user = await this.userRepository.findById(id)
+		if (!user) {
+			throw new NotFoundException('User not found')
+		}
+		return user
+	}
 }

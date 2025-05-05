@@ -8,6 +8,7 @@ import {
 	FindUserByIdUseCase,
 	UpdateUserUseCase,
 } from '../../../application/users'
+import { UserRepository } from '../../../domain/repositories/user.repository'
 import { UserEntity } from '../../database/entities'
 import { UserRepositoryImpl } from '../../database/repositories/user.repository.impl'
 import { UsersController } from '../controllers/users.controller'
@@ -29,6 +30,10 @@ import { UsersController } from '../controllers/users.controller'
 
 		// Repositories
 		{
+			provide: 'UserRepository',
+			useClass: UserRepositoryImpl,
+		},
+		{
 			provide: UserRepositoryImpl,
 			useClass: UserRepositoryImpl,
 		},
@@ -39,6 +44,7 @@ import { UsersController } from '../controllers/users.controller'
 		CreateUserUseCase,
 		UpdateUserUseCase,
 		DeleteUserUseCase,
+		'UserRepository',
 		UserRepositoryImpl,
 	],
 })

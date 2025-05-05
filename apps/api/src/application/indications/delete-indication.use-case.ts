@@ -1,6 +1,6 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, Inject } from '@nestjs/common'
 
-import { IndicationRepository } from '../../domain/repositories/indication.repository';
+import { IndicationRepository } from '../../domain/repositories/indication.repository'
 
 /**
  * Use case for deleting an indication
@@ -8,22 +8,22 @@ import { IndicationRepository } from '../../domain/repositories/indication.repos
  */
 @Injectable()
 export class DeleteIndicationUseCase {
-  constructor(private readonly indicationRepository: IndicationRepository) {}
+	constructor(@Inject('IndicationRepository') private readonly indicationRepository: IndicationRepository) {}
 
-  /**
-   * Execute the use case
-   * @param id - Indication ID
-   * @returns Promise<void>
-   * @throws NotFoundException - If indication is not found
-   */
-  async execute(id: string): Promise<void> {
-    // Check if indication exists
-    const existingIndication = await this.indicationRepository.findById(id);
-    if (!existingIndication) {
-      throw new NotFoundException('Indication not found');
-    }
+	/**
+	 * Execute the use case
+	 * @param id - Indication ID
+	 * @returns Promise<void>
+	 * @throws NotFoundException - If indication is not found
+	 */
+	async execute(id: string): Promise<void> {
+		// Check if indication exists
+		const existingIndication = await this.indicationRepository.findById(id)
+		if (!existingIndication) {
+			throw new NotFoundException('Indication not found')
+		}
 
-    // Delete the indication
-    return this.indicationRepository.delete(id);
-  }
+		// Delete the indication
+		return this.indicationRepository.delete(id)
+	}
 }

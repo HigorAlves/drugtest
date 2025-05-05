@@ -1,7 +1,7 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, Inject } from '@nestjs/common'
 
-import { Drug } from '../../domain/models/drug.model';
-import { DrugRepository } from '../../domain/repositories/drug.repository';
+import { Drug } from '../../domain/models/drug.model'
+import { DrugRepository } from '../../domain/repositories/drug.repository'
 
 /**
  * Use case for finding a drug by ID
@@ -9,19 +9,19 @@ import { DrugRepository } from '../../domain/repositories/drug.repository';
  */
 @Injectable()
 export class FindDrugByIdUseCase {
-  constructor(private readonly drugRepository: DrugRepository) {}
+	constructor(@Inject('DrugRepository') private readonly drugRepository: DrugRepository) {}
 
-  /**
-   * Execute the use case
-   * @param id - Drug ID
-   * @returns Promise<Drug> - Drug
-   * @throws NotFoundException - If drug is not found
-   */
-  async execute(id: string): Promise<Drug> {
-    const drug = await this.drugRepository.findById(id);
-    if (!drug) {
-      throw new NotFoundException('Drug not found');
-    }
-    return drug;
-  }
+	/**
+	 * Execute the use case
+	 * @param id - Drug ID
+	 * @returns Promise<Drug> - Drug
+	 * @throws NotFoundException - If drug is not found
+	 */
+	async execute(id: string): Promise<Drug> {
+		const drug = await this.drugRepository.findById(id)
+		if (!drug) {
+			throw new NotFoundException('Drug not found')
+		}
+		return drug
+	}
 }

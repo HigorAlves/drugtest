@@ -1,6 +1,6 @@
-import { Drug as DomainDrug } from '@enterprise/domain'
 import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm'
 
+import { Drug as DomainDrug } from '../../../domain/models/drug.model'
 import { IndicationEntity } from './indication.entity'
 
 @Entity('drugs')

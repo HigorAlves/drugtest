@@ -1,7 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Inject } from '@nestjs/common'
 
-import { MappingResult, ScrapedIndication } from '../../domain/models/indication-mapping.model';
-import { IndicationMappingServiceInterface } from '../../domain/services/indication-mapping.service.interface';
+import { MappingResult, ScrapedIndication } from '../../domain/models/indication-mapping.model'
+import { IndicationMappingServiceInterface } from '../../domain/services/indication-mapping.service.interface'
 
 /**
  * Use case for mapping multiple scraped indications to ICD-10 codes
@@ -9,14 +9,14 @@ import { IndicationMappingServiceInterface } from '../../domain/services/indicat
  */
 @Injectable()
 export class MapMultipleScrapedIndicationsUseCase {
-  constructor(private readonly indicationMappingService: IndicationMappingServiceInterface) {}
+	constructor(@Inject('IndicationMappingServiceInterface') private readonly indicationMappingService: IndicationMappingServiceInterface) {}
 
-  /**
-   * Execute the use case
-   * @param scrapedIndications - The scraped indications to map
-   * @returns Promise<MappingResult[]> - The mapping results
-   */
-  async execute(scrapedIndications: ScrapedIndication[]): Promise<MappingResult[]> {
-    return this.indicationMappingService.mapMultipleScrapedIndications(scrapedIndications);
-  }
+	/**
+	 * Execute the use case
+	 * @param scrapedIndications - The scraped indications to map
+	 * @returns Promise<MappingResult[]> - The mapping results
+	 */
+	async execute(scrapedIndications: ScrapedIndication[]): Promise<MappingResult[]> {
+		return this.indicationMappingService.mapMultipleScrapedIndications(scrapedIndications)
+	}
 }

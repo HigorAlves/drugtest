@@ -1,8 +1,8 @@
-import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
-import { Reflector } from '@nestjs/core';
+import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common'
+import { Reflector } from '@nestjs/core'
 
-import { UserRole } from '../../../domain/models/user.model';
-import { ROLES_KEY } from '../decorators/roles.decorator';
+import { UserRole } from '../../../domain/models/user.model'
+import { ROLES_KEY } from '../decorators/roles.decorator'
 
 /**
  * Guard for role-based access control
@@ -10,34 +10,34 @@ import { ROLES_KEY } from '../decorators/roles.decorator';
  */
 @Injectable()
 export class RolesGuard implements CanActivate {
-  constructor(private reflector: Reflector) {}
+	constructor(private reflector: Reflector) {}
 
-  /**
-   * Check if the request can activate the route
-   * @param context - Execution context
-   * @returns boolean - Whether the request can activate the route
-   */
-  canActivate(context: ExecutionContext): boolean {
-    // Get the required roles from the route handler
-    const requiredRoles = this.reflector.getAllAndOverride<UserRole[]>(ROLES_KEY, [
-      context.getHandler(),
-      context.getClass(),
-    ]);
+	/**
+	 * Check if the request can activate the route
+	 * @param context - Execution context
+	 * @returns boolean - Whether the request can activate the route
+	 */
+	canActivate(context: ExecutionContext): boolean {
+		// Get the required roles from the route handler
+		const requiredRoles = this.reflector.getAllAndOverride<UserRole[]>(ROLES_KEY, [
+			context.getHandler(),
+			context.getClass(),
+		])
 
-    // If no roles are required, allow access
-    if (!requiredRoles) {
-      return true;
-    }
+		// If no roles are required, allow access
+		if (!requiredRoles) {
+			return true
+		}
 
-    // Get the user from the request
-    const { user } = context.switchToHttp().getRequest();
+		// Get the user from the request
+		const { user } = context.switchToHttp().getRequest()
 
-    // If no user is present, deny access
-    if (!user) {
-      return false;
-    }
+		// If no user is present, deny access
+		if (!user) {
+			return false
+		}
 
-    // Check if the user has one of the required roles
-    return requiredRoles.some((role) => user.role === role);
-  }
+		// Check if the user has one of the required roles
+		return requiredRoles.some((role) => user.role === role)
+	}
 }

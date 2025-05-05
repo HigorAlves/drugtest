@@ -1,4 +1,5 @@
 import { z } from 'zod'
+
 import { IndicationSchema } from './indication.model'
 
 /**

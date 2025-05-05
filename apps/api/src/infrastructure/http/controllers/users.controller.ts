@@ -9,7 +9,7 @@ import {
 	UpdateUserUseCase,
 } from '../../../application/users'
 import { User, UserRole } from '../../../domain/models/user.model'
-import { JwtAuthGuard, RolesGuard, Roles } from '../../security'
+import { JwtAuthGuard, Roles, RolesGuard } from '../../security'
 import { CreateUserDto, UpdateUserDto } from '../dtos'
 
 /**

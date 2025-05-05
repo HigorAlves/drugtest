@@ -6,6 +6,7 @@ import { PassportModule } from '@nestjs/passport'
 import { LoginUseCase, RegisterUserUseCase, ValidateUserUseCase } from '../../../application/auth'
 import { JwtStrategy, LocalStrategy } from '../../security'
 import { AuthController } from '../controllers/auth.controller'
+import { UsersModule } from './users.module'
 
 /**
  * Module for authentication-related components
@@ -14,6 +15,7 @@ import { AuthController } from '../controllers/auth.controller'
 @Module({
 	imports: [
 		PassportModule,
+		UsersModule,
 		JwtModule.registerAsync({
 			imports: [ConfigModule],
 			inject: [ConfigService],

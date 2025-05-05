@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 
-import { User } from '../../domain/models/user.model';
 import { JwtPayload } from '../../domain/models/jwt-payload.model';
+import { User } from '../../domain/models/user.model';
 
 /**
  * Use case for logging in a user

@@ -1,7 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common'
 
-import { User } from '../../domain/models/user.model';
-import { UserRepository } from '../../domain/repositories/user.repository';
+import { User } from '../../domain/models/user.model'
+import { UserRepository } from '../../domain/repositories/user.repository'
 
 /**
  * Use case for finding all users
@@ -9,13 +9,13 @@ import { UserRepository } from '../../domain/repositories/user.repository';
  */
 @Injectable()
 export class FindAllUsersUseCase {
-  constructor(private readonly userRepository: UserRepository) {}
+	constructor(@Inject('UserRepository') private readonly userRepository: UserRepository) {}
 
-  /**
-   * Execute the use case
-   * @returns Promise<User[]> - List of users
-   */
-  async execute(): Promise<User[]> {
-    return this.userRepository.findAll();
-  }
+	/**
+	 * Execute the use case
+	 * @returns Promise<User[]> - List of users
+	 */
+	async execute(): Promise<User[]> {
+		return this.userRepository.findAll()
+	}
 }
