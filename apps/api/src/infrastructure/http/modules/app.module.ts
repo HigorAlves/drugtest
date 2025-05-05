@@ -3,16 +3,18 @@ import { ConfigModule } from '@nestjs/config'
 import { APP_GUARD } from '@nestjs/core'
 import { ThrottlerModule } from '@nestjs/throttler'
 
-import { DatabaseModule } from './infrastructure/database/database.module'
-import { AuthModule } from './modules/auth/auth.module'
-import { JwtAuthGuard } from './modules/auth/guards/jwt-auth.guard'
-import { RolesGuard } from './modules/auth/guards/roles.guard'
-import { DrugsModule } from './modules/drugs/drugs.module'
-import { IndicationMappingModule } from './modules/indication-mapping/indication-mapping.module'
-import { IndicationsModule } from './modules/indications/indications.module'
-import { ProgramsModule } from './modules/programs/programs.module'
-import { UsersModule } from './modules/users/users.module'
+import { DatabaseModule } from '../../database/database.module'
+import { JwtAuthGuard, RolesGuard } from '../../security'
+import { AuthModule } from './auth.module'
+import { DrugsModule } from './drugs.module'
+import { IndicationMappingModule } from './indication-mapping.module'
+import { IndicationsModule } from './indications.module'
+import { UsersModule } from './users.module'
 
+/**
+ * Main application module
+ * This module imports all feature modules and configures global providers
+ */
 @Module({
 	imports: [
 		ConfigModule.forRoot({
@@ -41,7 +43,6 @@ import { UsersModule } from './modules/users/users.module'
 		DrugsModule,
 		IndicationsModule,
 		IndicationMappingModule,
-		ProgramsModule,
 	],
 	providers: [
 		// Apply JWT authentication globally
