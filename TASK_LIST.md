@@ -63,11 +63,11 @@ We are building a microservice to:
 ✅ Output: all endpoints implemented
 
 ### 6️⃣ **Auth & Security**
-- [ ] Implement JWT auth guard
-- [ ] Implement roles guard
-- [ ] Hash passwords with bcrypt
-- [ ] Secure Swagger with auth token support
-- [ ] Add CORS + rate limiting
+- [x] Implement JWT auth guard
+- [x] Implement roles guard
+- [x] Hash passwords with bcrypt
+- [x] Secure Swagger with auth token support
+- [x] Add CORS + rate limiting
 
 ✅ Output: secure API
 
