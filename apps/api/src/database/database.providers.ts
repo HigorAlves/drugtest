@@ -6,13 +6,13 @@ export const databaseProviders = [
 		useFactory: async () => {
 			const dataSource = new DataSource({
 				type: 'postgres',
-				host: 'localhost',
-				port: 3306,
-				username: 'root',
-				password: 'root',
-				database: 'test',
+				host: process.env.TYPEORM_HOST || 'postgres',
+				port: parseInt(process.env.TYPEORM_PORT || '5432', 10),
+				username: process.env.TYPEORM_USERNAME || 'dev_local',
+				password: process.env.TYPEORM_PASSWORD || 'dev_local',
+				database: process.env.TYPEORM_DATABASE || 'dev_local',
 				entities: [__dirname + '/../**/*.entity{.ts,.js}'],
-				synchronize: true,
+				synchronize: process.env.TYPEORM_SYNCHRONIZE === 'true',
 			})
 
 			return dataSource.initialize()

@@ -4,6 +4,7 @@ import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nes
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard'
+import { IndicationMappingService } from '../indication-mapping/indication-mapping.service'
 import { CreateIndicationDto } from '../indications/dto/create-indication.dto'
 import { IndicationsService } from '../indications/indications.service'
 import { DrugsService } from './drugs.service'
@@ -16,7 +17,8 @@ import { UpdateDrugDto } from './dto/update-drug.dto'
 export class DrugsController {
   constructor(
     private readonly drugsService: DrugsService,
-    private readonly indicationsService: IndicationsService
+    private readonly indicationsService: IndicationsService,
+    private readonly indicationMappingService: IndicationMappingService
   ) {}
 
   @ApiOperation({ summary: 'Get all drugs' })
@@ -115,8 +117,8 @@ export class DrugsController {
     )
   }
 
-  @ApiOperation({ summary: 'Scrape indications from DailyMed for a drug' })
-  @ApiResponse({ status: 200, description: 'Return the scraped indications', type: [Indication] })
+  @ApiOperation({ summary: 'Scrape indications from DailyMed for a drug and map to ICD-10 codes' })
+  @ApiResponse({ status: 200, description: 'Return the scraped and mapped indications', type: [Indication] })
   @ApiResponse({ status: 404, description: 'Drug not found' })
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
@@ -131,17 +133,18 @@ export class DrugsController {
     // Scrape indications from DailyMed
     const scrapedIndications = await extractIndicationsFromDailyMed(drug.labelUrl)
 
-    // Save each indication to the database
+    // Map indications to ICD-10 codes using AI
+    const mappedIndications = await this.indicationMappingService.mapMultipleIndications(scrapedIndications)
+
+    // Save each mapped indication to the database
     const savedIndications: Indication[] = []
-    for (const indicationText of scrapedIndications) {
-      // For now, we'll use the scraped text as both description and sourceText
-      // In a real application, you might want to process this text further or use an AI service to map to ICD-10 codes
+    for (const mappedIndication of mappedIndications) {
       const indication = await this.indicationsService.create(
-        indicationText,
-        'UNKNOWN', // ICD-10 code would need to be determined
+        mappedIndication.description,
+        mappedIndication.icd10Code,
         id,
-        indicationText, // Use the raw text as sourceText
-        0.5 // Default confidence
+        mappedIndication.sourceText,
+        mappedIndication.mappingConfidence
       )
       savedIndications.push(indication)
     }

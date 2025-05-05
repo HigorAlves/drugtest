@@ -8,7 +8,9 @@ import { JwtAuthGuard } from './auth/guards/jwt-auth.guard'
 import { RolesGuard } from './auth/guards/roles.guard'
 import { DatabaseModule } from './database/database.module'
 import { DrugsModule } from './drugs/drugs.module'
+import { IndicationMappingModule } from './indication-mapping/indication-mapping.module'
 import { IndicationsModule } from './indications/indications.module'
+import { ProgramsModule } from './programs/programs.module'
 import { UsersModule } from './users/users.module'
 
 @Module({
@@ -38,6 +40,8 @@ import { UsersModule } from './users/users.module'
 		UsersModule,
 		DrugsModule,
 		IndicationsModule,
+		IndicationMappingModule,
+		ProgramsModule,
 	],
 	providers: [
 		// Apply JWT authentication globally

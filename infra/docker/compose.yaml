@@ -255,28 +255,40 @@ services:
           memory: 64M
           cpus: "0.1"
 
-#  api:
-#    build:
-#      context: ../../apps/api
-#      dockerfile: Dockerfile
-#    container_name: api
-#    shm_size: 128mb
-#    mem_limit: 512m
-#    environment:
-#      NODE_ENV: production
-#    ports:
-#      - "4000:4000"
-#    depends_on:
-#      - postgres
-#      - grafana
-#    deploy:
-#      resources:
-#        limits:
-#          memory: 512M
-#          cpus: "0.5"
-#        reservations:
-#          memory: 256M
-#          cpus: "0.25"
+  api:
+    build:
+      context: ../..
+      dockerfile: apps/api/Dockerfile
+    container_name: api
+    shm_size: 128mb
+    mem_limit: 512m
+    environment:
+      NODE_ENV: production
+      PORT: 4000
+      TYPEORM_HOST: postgres
+      TYPEORM_PORT: 5432
+      TYPEORM_USERNAME: ${TYPEORM_USERNAME:-dev_local}
+      TYPEORM_PASSWORD: ${TYPEORM_PASSWORD:-dev_local}
+      TYPEORM_DATABASE: ${TYPEORM_DATABASE:-dev_local}
+      TYPEORM_SYNCHRONIZE: "true"
+      JWT_SECRET: ${JWT_SECRET:-your-secret-key}
+      JWT_EXPIRATION: ${JWT_EXPIRATION:-1h}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-your-openai-api-key}
+    ports:
+      - "4000:4000"
+    depends_on:
+      - postgres
+    networks:
+      - default
+      - monitoring
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: "0.5"
+        reservations:
+          memory: 256M
+          cpus: "0.25"
 
 networks:
   monitoring:

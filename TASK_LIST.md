@@ -47,18 +47,18 @@ We are building a microservice to:
 ### 4️⃣ **Application Services**
 - [x] Service: `DrugService` for CRUD on drugs
 - [x] Service: `IndicationService` for CRUD on indications
-- [ ] Service: `ScraperService` (inject scraper package)
-- [ ] Service: `AiMapperService` (inject AI mapper package)
+- [x] Service: `ScraperService` (inject scraper package)
+- [x] Service: `AiMapperService` (inject AI mapper package)
 
 ✅ Output: core application services wired
 
 ### 5️⃣ **Controllers (REST Endpoints)**
-- [ ] `/api/drugs` → GET, POST, PUT, DELETE
-- [ ] `/api/drugs/:id/indications` → GET, POST
-- [ ] `/api/indications/:id` → GET, PUT, DELETE
-- [ ] `/api/programs/:programId` → GET (structured JSON)
-- [ ] `/api/auth/login` → POST
-- [ ] `/api/auth/register` → POST
+- [x] `/api/drugs` → GET, POST, PUT, DELETE
+- [x] `/api/drugs/:id/indications` → GET, POST
+- [x] `/api/indications/:id` → GET, PUT, DELETE
+- [x] `/api/programs/:programId` → GET (structured JSON)
+- [x] `/api/auth/login` → POST
+- [x] `/api/auth/register` → POST
 
 ✅ Output: all endpoints implemented
 
@@ -78,7 +78,7 @@ We are building a microservice to:
 ### 7️⃣ **Unit Tests**
 - [ ] Write unit tests for:
   - ScraperService (mock Puppeteer)
-  - AiMapperService (mock OpenAI API)
+  - [x] AiMapperService (mock OpenAI API)
   - DrugService
   - IndicationService
   - AuthService
@@ -115,19 +115,19 @@ We are building a microservice to:
 ## 🤖 **AI Mapper Package (OpenAI API)**
 
 ### 10️⃣ **AI Mapper Implementation**
-- [ ] Load ICD-10 code dataset (CSV or JSON)
-- [ ] Write `mapToIcd10(indication: string): { code: string, confidence: number }`
-- [ ] Build prompt: "Given this condition: [x], pick closest code from [icd10 codes]"
-- [ ] Call OpenAI API with prompt
-- [ ] Parse LLM response
-- [ ] Implement fallback for unmapped
+- [x] Load ICD-10 code dataset (CSV or JSON)
+- [x] Write `mapToIcd10(indication: string): { code: string, confidence: number }`
+- [x] Build prompt: "Given this condition: [x], pick closest code from [icd10 codes]"
+- [x] Call OpenAI API with prompt
+- [x] Parse LLM response
+- [x] Implement fallback for unmapped
 
 ✅ Output: AI mapper with test cases
 
 ### 11️⃣ **AI Mapper Tests**
-- [ ] Mock OpenAI API responses
-- [ ] Test common synonyms (e.g. "hypertension" → "I10")
-- [ ] Test unmappable conditions return null
+- [x] Mock OpenAI API responses
+- [x] Test common synonyms (e.g. "hypertension" → "I10")
+- [x] Test unmappable conditions return null
 
 ✅ Output: AI mapper coverage
 
@@ -136,10 +136,10 @@ We are building a microservice to:
 ## 🐳 **Docker & Deployment Tasks**
 
 ### 12️⃣ **Dockerization**
-- [ ] Write `Dockerfile` for API app
-- [ ] Write `docker-compose.yml` (API + Postgres + optional pgAdmin)
-- [ ] Define `.env` for config
-- [ ] Ensure API runs & connects to DB with `docker-compose up`
+- [x] Write `Dockerfile` for API app
+- [x] Write `docker-compose.yml` (API + Postgres + optional pgAdmin)
+- [x] Define `.env` for config
+- [x] Ensure API runs & connects to DB with `docker-compose up`
 
 ✅ Output: full Dockerized app
 
