@@ -1,1 +1,1 @@
-console.log('oi')
+export * from './scraper';

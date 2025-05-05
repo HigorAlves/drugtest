@@ -43,7 +43,8 @@
 	"dependencies": {
 		"@casl/ability": "^6.7.3",
 		"zod": "^3.24.3",
-		"@enterprise/database": "*"
+		"@enterprise/database": "*",
+		"puppeteer": "^22.0.0"
 	},
 	"devDependencies": {
 		"@enterprise/eslint-config": "*",
