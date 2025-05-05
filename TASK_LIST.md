@@ -30,10 +30,10 @@ We are building a microservice to:
 ## ⚙️ **API Development Tasks (NestJS)**
 
 ### 2️⃣ **NestJS API Scaffolding**
-- [ ] Scaffold NestJS app in `apps/api`
-- [ ] Install modules: `@nestjs/config`, `@nestjs/jwt`, `@nestjs/passport`, `class-validator`, `swagger-ui-express`
-- [ ] Setup Swagger at `/api/docs`
-- [ ] Implement global validation pipe
+- [x] Scaffold NestJS app in `apps/api`
+- [x] Install modules: `@nestjs/config`, `@nestjs/jwt`, `@nestjs/passport`, `class-validator`, `swagger-ui-express`
+- [x] Setup Swagger at `/api/docs`
+- [x] Implement global validation pipe
 
 ✅ Output: bootstrapped API with validation & docs
 
@@ -47,8 +47,8 @@ We are building a microservice to:
 ### 4️⃣ **Application Services**
 - [x] Service: `DrugService` for CRUD on drugs
 - [x] Service: `IndicationService` for CRUD on indications
-- [x] Service: `ScraperService` (inject scraper package)
-- [x] Service: `AiMapperService` (inject AI mapper package)
+- [ ] Service: `ScraperService` (inject scraper package)
+- [ ] Service: `AiMapperService` (inject AI mapper package)
 
 ✅ Output: core application services wired
 
