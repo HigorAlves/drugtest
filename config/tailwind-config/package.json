@@ -1,0 +1,24 @@
+{
+	"name": "@enterprise/tailwind-config",
+	"version": "1.0.0",
+	"private": true,
+	"exports": {
+		".": "./tailwind.config.ts"
+	},
+	"author": {
+		"email": "me@higoralves.dev",
+		"name": "Higor Alves",
+		"url": "https://higoralves.dev"
+	},
+	"prettier": "@enterprise/prettier",
+	"eslintConfig": {
+		"extends": [
+			"@enterprise/eslint-config/library.js"
+		]
+	},
+	"devDependencies": {
+		"@enterprise/typescript-config": "*",
+		"tailwindcss": "^4.1.4",
+		"eslint": "^9.24.0"
+	}
+}

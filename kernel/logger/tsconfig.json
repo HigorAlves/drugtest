@@ -1,0 +1,9 @@
+{
+  "extends": "@enterprise/typescript-config/library.json",
+  "compilerOptions": {
+    "baseUrl": "src",
+    "paths": {
+      "@/*": ["*"]
+    }
+  },
+}

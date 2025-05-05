@@ -1,0 +1,44 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "globalEnv": ["NODE_ENV", "LOG_LEVEL", "GRAFANA_LOKI_HOST", "PEPPER"],
+  "ui": "tui",
+  "tasks": {
+    "lint": {
+      "dependsOn": ["^lint"]
+    },
+    "lint:fix": {
+      "dependsOn": ["^lint:fix"]
+    },
+    "check-types": {
+      "dependsOn": ["^check-types", "build"]
+    },
+    "build": {
+      "dependsOn": ["^build"],
+      "inputs": ["$TURBO_DEFAULT$", ".env*"],
+      "outputs": [".next/**", "!.next/cache/**", "dist/**"],
+      "cache": true
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
+    },
+    "test:unit": {
+      "dependsOn": ["transit", "build", "@enterprise/vitest-config#build"],
+      "outputs": ["coverage.json"],
+      "cache": true
+    },
+    "test:e2e": {
+      "dependsOn": ["transit", "build", "@enterprise/vitest-config#build"],
+      "outputs": ["coverage.json"],
+      "cache": true
+    },
+    "transit": {
+      "dependsOn": ["^transit"]
+    },
+    "typeorm": {
+      "cache": false,
+      "outputs": [],
+      "dependsOn": []
+    }
+  }
+}

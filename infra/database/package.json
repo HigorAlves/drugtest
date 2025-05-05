@@ -1,0 +1,71 @@
+{
+	"name": "@enterprise/database",
+	"version": "1.0.0",
+	"description": "",
+	"main": "./dist/index.cjs",
+	"module": "./dist/index.mjs",
+	"types": "./dist/index.d.cts",
+	"license": "ISC",
+	"type": "module",
+	"scripts": {
+		"lint": "eslint src --max-warnings 0",
+		"lint:fix": "eslint --fix src --max-warnings 0",
+		"compile": "tsc",
+		"start": "yarn run compile && node ./dist/src/index.js",
+		"dev": "tsx watch --env-file=.env.development src/index.ts",
+		"build": "pkgroll --minify --clean-dist --sourcemap",
+		"check-types": "tsc --noEmit",
+		"typeorm": "tsx --env-file=.env.development -r tsconfig-paths/register ../../node_modules/typeorm/cli.js -d src/postgres/data-source.ts",
+		"generate:uml": "npx tsx --env-file=.env.development ../../node_modules/erdia/dist/cjs/cli.cjs build",
+		"database": "",
+		"test:unit:watch": "vitest watch run .test.ts",
+		"test:unit": "vitest run .test.ts",
+		"test:e2e": "vitest run .spec.ts"
+	},
+	"keywords": [],
+	"author": {
+		"email": "me@higoralves.dev",
+		"name": "Higor Alves",
+		"url": "https://higoralves.dev"
+	},
+	"exports": {
+		"require": {
+			"types": "./dist/index.d.cts",
+			"default": "./dist/index.cjs"
+		},
+		"import": {
+			"types": "./dist/index.d.mts",
+			"default": "./dist/index.mjs"
+		}
+	},
+	"prettier": "@enterprise/prettier",
+	"eslintConfig": {
+		"extends": [
+			"@enterprise/eslint-config/library.js"
+		]
+	},
+	"dependencies": {
+		"@enterprise/logger": "*",
+		"@t3-oss/env-core": "^0.12.0",
+		"pg": "^8.14.1",
+		"reflect-metadata": "^0.2.2",
+		"typeorm": "^0.3.22",
+		"zod": "^3.24.3"
+	},
+	"devDependencies": {
+		"@enterprise/eslint-config": "*",
+		"@enterprise/prettier": "*",
+		"@enterprise/typescript-config": "*",
+		"@enterprise/vitest-config": "*",
+		"@testcontainers/postgresql": "^10.24.2",
+		"@types/node": "^22.14.1",
+		"erdia": "^3.7.1",
+		"eslint": "^9.25.0",
+		"pkgroll": "^2.12.1",
+		"testcontainers": "^10.24.2",
+		"ts-node": "^10.9.2",
+		"tsx": "^4.19.3",
+		"typescript": "^5.8.3",
+		"vitest": "^3.1.1"
+	}
+}

@@ -1,0 +1,21 @@
+{
+	"name": "@enterprise/prettier",
+	"version": "1.0.0",
+	"main": "index.mjs",
+	"private": true,
+	"prettier": "./index.mjs",
+	"author": {
+		"email": "me@higoralves.dev",
+		"name": "Higor Alves",
+		"url": "https://higoralves.dev"
+	},
+	"eslintConfig": {
+		"extends": [
+			"@enterprise/eslint-config/library.js"
+		]
+	},
+	"devDependencies": {
+		"prettier": "^3.5.3",
+		"eslint": "^9.24.0"
+	}
+}

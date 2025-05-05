@@ -1,0 +1,46 @@
+apiVersion: 1
+
+providers:
+  - name: "Tracing Dashboards"
+    orgId: 1
+    folder: "Tracing"
+    type: file
+    disableDeletion: false
+    updateIntervalSeconds: 10
+    allowUiUpdates: true
+    options:
+      path: /etc/grafana/provisioning/dashboards/tracing
+      foldersFromFilesStructure: true
+
+  - name: "Logs Dashboards"
+    orgId: 1
+    folder: "Logs"
+    type: file
+    disableDeletion: false
+    updateIntervalSeconds: 10
+    allowUiUpdates: true
+    options:
+      path: /etc/grafana/provisioning/dashboards/logs-dash
+      foldersFromFilesStructure: true
+
+  - name: "Infrastructure Dashboards"
+    orgId: 1
+    folder: "Infrastructure"
+    type: file
+    disableDeletion: false
+    updateIntervalSeconds: 10
+    allowUiUpdates: true
+    options:
+      path: /etc/grafana/provisioning/dashboards/infrastructure
+      foldersFromFilesStructure: true
+
+  - name: "Database Dashboards"
+    orgId: 1
+    folder: "Database"
+    type: file
+    disableDeletion: false
+    updateIntervalSeconds: 10
+    allowUiUpdates: true
+    options:
+      path: /etc/grafana/provisioning/dashboards/database
+      foldersFromFilesStructure: true

@@ -1,0 +1,47 @@
+groups:
+  - name: blackbox_alerts
+    rules:
+      - alert: EndpointDown
+        expr: probe_success == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Endpoint down (instance {{ $labels.instance }})"
+          description: "Endpoint is down\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}"
+
+      - alert: SlowHTTPResponse
+        expr: probe_http_duration_seconds{phase="total"} > 1
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Slow HTTP response (instance {{ $labels.instance }})"
+          description: "HTTP response time is > 1s\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}"
+
+      - alert: SSLCertificateWillExpireSoon
+        expr: probe_ssl_earliest_cert_expiry - time() < 86400 * 30
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "SSL certificate will expire soon (instance {{ $labels.instance }})"
+          description: "SSL certificate will expire in less than 30 days\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}"
+
+      - alert: SSLCertificateExpired
+        expr: probe_ssl_earliest_cert_expiry - time() <= 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "SSL certificate expired (instance {{ $labels.instance }})"
+          description: "SSL certificate has expired\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}"
+
+      - alert: HTTPStatusCodeNot200
+        expr: probe_http_status_code != 200
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "HTTP status code not 200 (instance {{ $labels.instance }})"
+          description: "HTTP status code is not 200\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}"

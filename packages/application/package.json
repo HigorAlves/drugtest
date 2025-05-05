@@ -1,0 +1,52 @@
+{
+	"name": "@enterprise/application",
+	"version": "1.0.0",
+	"description": "",
+	"license": "ISC",
+	"type": "module",
+	"scripts": {
+		"lint": "eslint src --max-warnings 0",
+		"lint:fix": "eslint --fix src --max-warnings 0",
+		"compile": "tsc",
+		"start": "yarn run compile && node ./dist/index.js",
+		"dev": "tsx watch src/index.ts",
+		"build": "pkgroll --minify --clean-dist --sourcemap",
+		"check-types": "tsc --noEmit"
+	},
+	"main": "./dist/index.cjs",
+	"module": "./dist/index.mjs",
+	"types": "./dist/index.d.cts",
+	"exports": {
+		"require": {
+			"types": "./dist/index.d.cts",
+			"default": "./dist/index.cjs"
+		},
+		"import": {
+			"types": "./dist/index.d.mts",
+			"default": "./dist/index.mjs"
+		}
+	},
+	"keywords": [],
+	"author": {
+		"email": "me@higoralves.dev",
+		"name": "Higor Alves",
+		"url": "https://higoralves.dev"
+	},
+	"prettier": "@enterprise/prettier",
+	"eslintConfig": {
+		"extends": [
+			"@enterprise/eslint-config/library.js"
+		]
+	},
+	"dependencies": {},
+	"devDependencies": {
+		"@enterprise/eslint-config": "*",
+		"@enterprise/prettier": "*",
+		"@enterprise/typescript-config": "*",
+		"@types/node": "^22.14.1",
+		"pkgroll": "^2.12.1",
+		"tsx": "^4.19.3",
+		"typescript": "^5.8.3",
+		"eslint": "^9.24.0"
+	}
+}

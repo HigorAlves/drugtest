@@ -1,0 +1,50 @@
+{
+	"name": "@enterprise/vitest-config",
+	"version": "1.0.0",
+	"private": true,
+	"prettier": "@enterprise/prettier",
+	"type": "module",
+	"scripts": {
+		"build": "tsc",
+		"collect-json-reports": "node dist/scripts/collect-json-outputs.js",
+		"merge-json-reports": "nyc merge coverage/raw coverage/merged/merged-coverage.json",
+		"report": "nyc report -t coverage/merged --report-dir coverage/report --reporter=html --exclude-after-remap false",
+		"view-report": "open coverage/report/index.html"
+	},
+	"exports": {
+		"./base": {
+			"types": "./dist/configs/base-config.d.ts",
+			"default": "./dist/configs/base-config.js"
+		},
+		"./ui": {
+			"types": "./dist/configs/ui-config.d.ts",
+			"default": "./dist/configs/ui-config.js"
+		}
+	},
+	"author": {
+		"email": "me@higoralves.dev",
+		"name": "Higor Alves",
+		"url": "https://higoralves.dev"
+	},
+	"eslintConfig": {
+		"extends": [
+			"@enterprise/eslint-config/library.js"
+		]
+	},
+	"devDependencies": {
+		"@enterprise/eslint-config": "*",
+		"@enterprise/prettier": "*",
+		"@enterprise/typescript-config": "*",
+		"@types/node": "^22.14.1",
+		"@vitest/coverage-istanbul": "^3.1.1",
+		"@vitest/ui": "3.1.1",
+		"eslint": "^9.25.0",
+		"glob": "^11.0.1",
+		"jsdom": "^26.1.0",
+		"nyc": "^17.1.0",
+		"prettier": "^3.5.3",
+		"vite-tsconfig-paths": "^5.1.4",
+		"vitest": "^3.1.1",
+		"pkgroll": "^2.12.1"
+	}
+}
