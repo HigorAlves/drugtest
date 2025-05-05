@@ -9,6 +9,7 @@ import { AuthModule } from './auth.module'
 import { DrugsModule } from './drugs.module'
 import { IndicationMappingModule } from './indication-mapping.module'
 import { IndicationsModule } from './indications.module'
+import { ProgramsModule } from './programs.module'
 import { UsersModule } from './users.module'
 
 /**
@@ -43,6 +44,7 @@ import { UsersModule } from './users.module'
 		DrugsModule,
 		IndicationsModule,
 		IndicationMappingModule,
+		ProgramsModule,
 	],
 	providers: [
 		// Apply JWT authentication globally
