@@ -29,11 +29,7 @@
   "packageManager": "yarn@1.22.22",
   "workspaces": [
     "apps/*",
-    "config/*",
-    "infra/*",
-    "kernel/*",
-    "libs/*",
-    "packages/*"
+    "config/*"
   ],
   "author": {
     "email": "me@higoralves.dev",

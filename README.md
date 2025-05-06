@@ -438,6 +438,51 @@ For demo:
 
 ---
 
-## 📖 **License**
+# Docker Compose Setup
 
-MIT
+This directory contains the Docker Compose configuration for running the entire system.
+
+## Prerequisites
+
+- Docker
+- Docker Compose
+
+## Getting Started
+
+1. Make sure you are in the `infra/docker` directory
+2. Run the following command to start all services:
+
+```bash
+docker compose up
+```
+
+This will start the following services:
+- PostgreSQL database
+- API service
+
+## Environment Variables
+
+The default environment variables are defined in the `.env` file in this directory. You can modify these values as needed.
+
+## Accessing the Services
+
+- API: http://localhost:4000
+- API Documentation: http://localhost:4000/api/docs
+- PostgreSQL: localhost:5432
+   - Username: dev_local
+   - Password: dev_local
+   - Database: dev_local
+
+## Stopping the Services
+
+To stop all services, press `Ctrl+C` in the terminal where Docker Compose is running, or run:
+
+```bash
+docker compose down
+```
+
+To stop all services and remove all data (including the database volume), run:
+
+```bash
+docker compose down -v
+```

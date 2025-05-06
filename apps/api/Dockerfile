@@ -1,4 +1,4 @@
-FROM node:20-alpine AS base
+FROM node:22-alpine AS base
 
 # Set working directory
 WORKDIR /app
@@ -8,24 +8,21 @@ COPY package.json ./
 COPY yarn.lock ./
 COPY turbo.json ./
 COPY apps/api/package.json ./apps/api/
-COPY packages/scraper/package.json ./packages/scraper/
-COPY packages/domain/package.json ./packages/domain/
-COPY packages/eslint-config/package.json ./packages/eslint-config/ 2>/dev/null || :
-COPY packages/prettier/package.json ./packages/prettier/ 2>/dev/null || :
-COPY packages/typescript-config/package.json ./packages/typescript-config/ 2>/dev/null || :
-COPY packages/vitest-config/package.json ./packages/vitest-config/ 2>/dev/null || :
+
+# Create config directories
+RUN mkdir -p ./config/eslint-config ./config/prettier ./config/typescript-config ./config/vitest-config
+
+# Copy config files
+COPY config/eslint-config ./config/eslint-config
+COPY config/prettier ./config/prettier
+COPY config/typescript-config ./config/typescript-config
+COPY config/vitest-config ./config/vitest-config
 
 # Install dependencies
 RUN yarn install --frozen-lockfile
 
 # Copy source code
 COPY apps/api ./apps/api
-COPY packages/scraper ./packages/scraper
-COPY packages/domain ./packages/domain
-COPY packages/eslint-config ./packages/eslint-config 2>/dev/null || :
-COPY packages/prettier ./packages/prettier 2>/dev/null || :
-COPY packages/typescript-config ./packages/typescript-config 2>/dev/null || :
-COPY packages/vitest-config ./packages/vitest-config 2>/dev/null || :
 
 # Build the application
 WORKDIR /app/apps/api

@@ -1,4 +1,4 @@
-import { Injectable, Inject } from '@nestjs/common'
+import { Inject, Injectable } from '@nestjs/common'
 
 import { MappingResult, ScrapedIndication } from '../../domain/models/indication-mapping.model'
 import { IndicationMappingServiceInterface } from '../../domain/services/indication-mapping.service.interface'
@@ -9,7 +9,10 @@ import { IndicationMappingServiceInterface } from '../../domain/services/indicat
  */
 @Injectable()
 export class MapMultipleScrapedIndicationsUseCase {
-	constructor(@Inject('IndicationMappingServiceInterface') private readonly indicationMappingService: IndicationMappingServiceInterface) {}
+	constructor(
+		@Inject('IndicationMappingServiceInterface')
+		private readonly indicationMappingService: IndicationMappingServiceInterface
+	) {}
 
 	/**
 	 * Execute the use case

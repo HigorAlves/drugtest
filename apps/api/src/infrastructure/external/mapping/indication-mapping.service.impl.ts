@@ -16,9 +16,9 @@ export class IndicationMappingServiceImpl implements IndicationMappingServiceInt
 
 	constructor(private configService: ConfigService) {
 		try {
-			const apiKey = this.configService.get<string>('OPENAI_API_KEY')
+			const apiKey = this.configService.get<string>('OPEN_API_KEY') || this.configService.get<string>('OPENAI_API_KEY')
 			if (!apiKey) {
-				this.logger.warn('OPENAI_API_KEY not found in environment variables')
+				this.logger.warn('OPEN_API_KEY or OPENAI_API_KEY not found in environment variables')
 			}
 			this.openai = new OpenAI({ apiKey })
 		} catch (e) {
@@ -33,6 +33,10 @@ export class IndicationMappingServiceImpl implements IndicationMappingServiceInt
 	 */
 	async mapScrapedIndication(scraped: ScrapedIndication): Promise<MappingResult> {
 		try {
+			if (!this.openai || !this.openai.chat) {
+				throw new Error('OpenAI client not properly initialized. Check your API key.')
+			}
+
 			const prompt = `Map the following medical indication to an ICD-10 code:\n\nIndication: "${scraped.indication}"\nDescription: "${scraped.description}"`
 
 			const response = await this.openai.chat.completions.create({
@@ -53,7 +57,6 @@ For drugs with multiple indications, map each indication separately.`,
 					{ role: 'user', content: prompt },
 				],
 				temperature: 0.2,
-				response_format: { type: 'json_object' },
 			})
 
 			const content = response.choices[0]?.message?.content
@@ -61,7 +64,19 @@ For drugs with multiple indications, map each indication separately.`,
 				throw new Error('No content in OpenAI response')
 			}
 
-			const result = JSON.parse(content)
+			let result;
+			try {
+				result = JSON.parse(content);
+			} catch (parseError) {
+				this.logger.warn(`Failed to parse OpenAI response as JSON: ${parseError.message}. Using raw content.`);
+				// If parsing fails, create a fallback result
+				return new MappingResult({
+					description: scraped.description,
+					icd10Code: 'UNMAPPABLE',
+					mappingConfidence: 0.3,
+					sourceText: `${scraped.indication} - ${scraped.description}`,
+				});
+			}
 
 			return new MappingResult({
 				description: result.description || scraped.description,
