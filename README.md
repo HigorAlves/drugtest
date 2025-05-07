@@ -139,26 +139,6 @@ yarn workspace api start:dev
 
 ---
 
-## 📂 **Project Structure**
-
-The project is organized as a monorepo using TurboRepo:
-
-```
-/
-├── apps/
-│   └── api/                # NestJS API application
-│       ├── src/
-│       │   ├── application/    # Application layer (use cases)
-│       │   ├── domain/         # Domain layer (models, interfaces)
-│       │   └── infrastructure/ # Infrastructure layer (controllers, repositories)
-│       └── ...
-├── packages/
-│   ├── scraper/            # Puppeteer scraper module
-│   ├── ai-mapper/          # AI/LLM mapping service
-│   └── config/             # Shared configurations
-└── ...
-```
-
 ### API Structure
 
 The API follows a modular structure with the following components:
